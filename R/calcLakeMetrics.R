@@ -6,7 +6,7 @@
 #' 
 #' @param inLakeMorpho an object of \code{\link{lakeMorphoClass}}.  Output of the 
 #'        \code{\link{lakeSurroundTopo}} function would be appropriate as input
-#' @param bearing Character that indicates the bearing of the desired fetch
+#' @param bearing Numeric that indicates the bearing of the desired fetch.  
 #' @param pointDens Number of points to place equidistant along shoreline for 
 #'        \code{\link{lakeMaxLength}} or density of lines to test for 
 #'        \code{\link{lakeMaxWidth}} and \code{\link{lakeFetch}}.
@@ -37,14 +37,15 @@
 #' @examples
 #' \dontrun{
 #' data(lakes)
-#' calcLakeMetrics(inputLM,45,250)}
+#' calcLakeMetrics(inputLM,45,250)
+#' }
 
 calcLakeMetrics <- function(inLakeMorpho, bearing, pointDens, correctFactor = 1) {
     if (class(inLakeMorpho) != "lakeMorpho") {
         return(warning("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo first."))
     }
     allMet <- list(surfaceArea = lakeSurfaceArea(inLakeMorpho), shorelineLength = lakeShorelineLength(inLakeMorpho), 
-        shorelinDevelopment = lakeShorelineDevelopment(inLakeMorpho), maxDepth = lakeMaxDepth(inLakeMorpho, 
+        shorelineDevelopment = lakeShorelineDevelopment(inLakeMorpho), maxDepth = lakeMaxDepth(inLakeMorpho, 
             correctFactor), volume = lakeVolume(inLakeMorpho, correctFactor), meanDepth = lakeMeanDepth(inLakeMorpho), 
         maxLength = lakeMaxLength(inLakeMorpho, pointDens), maxWidth = lakeMaxWidth(inLakeMorpho, pointDens), 
         meanWidth = lakeMeanWidth(inLakeMorpho), fetch = lakeFetch(inLakeMorpho, bearing))

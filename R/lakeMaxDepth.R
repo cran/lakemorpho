@@ -25,6 +25,7 @@
 #'             \href{http://edis.ifas.ufl.edu/pdffiles/FA/FA08100.pdf}{Link}
 #' 
 #' @import raster
+#' @importFrom stats median
 #' 
 #' @examples
 #' data(lakes)
@@ -32,7 +33,11 @@
 
 lakeMaxDepth <- function(inLakeMorpho, correctFactor = 1) {
     if (class(inLakeMorpho) != "lakeMorpho") {
-        return(warning("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo first."))
+      stop("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo or lakeMorphoClass first.")
+    }
+    if(is.null(inLakeMorpho$elev)){
+      stop("Input elevation dataset required to estimate depth related metrics.  
+             Run lakeSurround Topo first with elevation included")
     }
     slope <- terrain(inLakeMorpho$elev, "slope")@data@values
     slope_med <- median(slope, na.rm = T)

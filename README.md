@@ -1,3 +1,11 @@
+[![travis_status](https://travis-ci.org/jhollist/lakemorpho.svg)](https://travis-ci.org/jhollist/lakemorpho)  
+
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jhollist/lakemorpho?branch=master)](https://ci.appveyor.com/project/jhollist/lakemorpho) 
+
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.16244.svg)](http://dx.doi.org/10.5281/zenodo.16244)
+
+[![RStudio_CRAN_Downloads](http://cranlogs.r-pkg.org/badges/grand-total/lakemorpho)](http://cranlogs.r-pkg.org/badges/grand-total/lakemorpho)
+
 # lakemorpho
 The purpose of `lakemorpho` is to provide a suite of tools that can be used to calculate basic lake morphometry metrics from an input SpatialPolygonsDataframe of a lake and a digital elevation model, as a RasterLayer, for the terrain surrounding that lake.  These tools are being used to calculate lake morphometry metrics for all "lakepond" waterbodies in the [NHDPlus V2](http://www.horizon-systems.com/nhdplus/NHDPlusV2_home.php).
 
@@ -17,7 +25,6 @@ The purpose of `lakemorpho` is to provide a suite of tools that can be used to c
 
 # To install 
 Install version 1.0 of `lakemorpho` from CRAN:
-Note: Not currently available from CRAN
 
 ```
 install.packages("lakemorpho")

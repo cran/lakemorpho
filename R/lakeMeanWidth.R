@@ -14,15 +14,17 @@
 #' #' @import rgeos
 #' 
 #' @examples
+#' \dontrun{
 #' data(lakes)
 #' lakeMeanWidth(inputLM)
+#' }
 
 lakeMeanWidth <- function(inLakeMorpho) {
     if (class(inLakeMorpho) != "lakeMorpho") {
-        return(warning("Input data is not of class 'lakeMorpho'.  Run lakeSurroundTopo first."))
+        stop("Input data is not of class 'lakeMorpho'.  Run lakeSurroundTopo first.")
     }
     if (is.null(inLakeMorpho$maxLengthLine)) {
-        return(warning("Input 'lakeMorpho' does not contain a Maximum Length Line.  Run lakeMaxLength  first."))
+        stop("Input 'lakeMorpho' does not contain a Maximum Length Line.  Run lakeMaxLength  first.")
     }
     return(lakeSurfaceArea(inLakeMorpho)/gLength(inLakeMorpho$maxLengthLine))
 } 

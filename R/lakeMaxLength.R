@@ -29,14 +29,15 @@
 #'             - Lake Morphometry (2nd ed.). Gainesville: Florida LAKEWATCH, 
 #'             Department of Fisheries and Aquatic Sciences.
 #'             \href{http://edis.ifas.ufl.edu/pdffiles/FA/FA08100.pdf}{Link}
-#' @import sp rgeos
+#' @import sp rgeos methods
+#' @importFrom stats dist
 #' @examples
 #' data(lakes)
 #' lakeMaxLength(inputLM,50)
 
 lakeMaxLength <- function(inLakeMorpho, pointDens, addLine = T) {
     if (class(inLakeMorpho) != "lakeMorpho") {
-        return(warning("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo first."))
+        stop("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo or lakeMorphoClass first.")
     }
     result <- NA
     lakeShorePoints <- spsample(as(inLakeMorpho$lake, "SpatialLines"), pointDens, "regular")@coords
@@ -50,7 +51,7 @@ lakeMaxLength <- function(inLakeMorpho, pointDens, addLine = T) {
     xylist <- split(xydf, rownames(xydf))
     myLines <- SpatialLines(lapply(xylist, function(x) Lines(list(Line(matrix(as.numeric(x), 2, 2))), row.names(x))), 
         proj4string = CRS(proj4string(inLakeMorpho$lake)))
-    myInd <- gWithin(myLines, inLakeMorpho$lake, byid = T)
+    myInd <- gContains(inLakeMorpho$lake, myLines, byid = T)
     if (sum(myInd) == 0) {
         return(NA)
     }
@@ -58,7 +59,7 @@ lakeMaxLength <- function(inLakeMorpho, pointDens, addLine = T) {
     result <- gLength(myLine)
     
     if (addLine) {
-        myName <- paste(substitute(inLakeMorpho))
+        myName <- deparse(substitute(inLakeMorpho))
         inLakeMorpho$maxLengthLine <- NULL
         inLakeMorpho <- c(inLakeMorpho, maxLengthLine = myLine)
         class(inLakeMorpho) <- "lakeMorpho"

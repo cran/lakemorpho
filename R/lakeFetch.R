@@ -5,7 +5,7 @@
 #' 
 #' @param inLakeMorpho An object of \code{\link{lakeMorphoClass}}.  Output of the 
 #'        \code{\link{lakeSurroundTopo}} function would be appropriate as input
-#' @param bearing Character that indicates the bearing of the desired fetch 
+#' @param bearing Numeric that indicates the bearing of the desired fetch 
 #' @param addLine Boolean to determine if the selected max length line should be 
 #'        added to the inLakeMorpho object.  Defaults to True.  Note that the 
 #'        line is returned in the same projection as the input data.  
@@ -19,7 +19,7 @@
 #'             Department of Fisheries and Aquatic Sciences.
 #'             \href{http://edis.ifas.ufl.edu/pdffiles/FA/FA08100.pdf}{Link}
 #' 
-#' @import sp geosphere rgeos rgdal maptools
+#' @import sp geosphere rgeos rgdal methods
 #' 
 #' @export
 #' 
@@ -28,9 +28,9 @@
 #' lakeFetch(inputLM,45)
 
 lakeFetch <- function(inLakeMorpho, bearing, addLine = T) {
-    inputName <- paste(substitute(inLakeMorpho))
+    inputName <- deparse(substitute(inLakeMorpho))
     if (class(inLakeMorpho) != "lakeMorpho") {
-        return(warning("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo first."))
+      stop("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo or lakeMorphoClass first.")
     }
     result <- NA
     # convert to dd
@@ -71,22 +71,20 @@ lakeFetch <- function(inLakeMorpho, bearing, addLine = T) {
     centPts <- list()
     centPts[[1]] <- coordinates(lakedd)
     colnames(centPts[[1]]) <- c("lon", "lat")
-    centPts[[2]] <- destPoint(centPts[[1]], perpbear1, max(res(inLakeMorpho$lakeDistance)) * 3)
+    centPts[[2]] <- destPoint(centPts[[1]], perpbear1, 100)
     i <- length(centPts)
     while (centPts[[i]][, 1] < coordinates(maxPt)[, 1] & centPts[[i]][, 1] > coordinates(minPt)[, 1] & centPts[[i]][, 
         2] < coordinates(maxPt)[, 2] & centPts[[i]][, 2] > coordinates(minPt)[, 2]) {
         i <- length(centPts) + 1
-        centPts[[i]] <- destPoint(centPts[[i - 1]], perpbear1, round(max(res(inLakeMorpho$lakeDistance)) * 
-            3))
+        centPts[[i]] <- destPoint(centPts[[i - 1]], perpbear1, 100)
     }
     # Build list of center points for perpbear2
     i <- length(centPts) + 1
-    centPts[[i]] <- destPoint(centPts[[1]], perpbear2, max(res(inLakeMorpho$lakeDistance)) * 3)
+    centPts[[i]] <- destPoint(centPts[[1]], perpbear2, 100)
     while (centPts[[i]][, 1] < coordinates(maxPt)[, 1] & centPts[[i]][, 1] > coordinates(minPt)[, 1] & centPts[[i]][, 
         2] < coordinates(maxPt)[, 2] & centPts[[i]][, 2] > coordinates(minPt)[, 2]) {
         i <- length(centPts) + 1
-        centPts[[i]] <- destPoint(centPts[[i - 1]], perpbear2, round(max(res(inLakeMorpho$lakeDistance)) * 
-            3))
+        centPts[[i]] <- destPoint(centPts[[i - 1]], perpbear2, 100)
     }
     # calc point for centroid, max distance, bearing + 180 (if bearing is less that 180) or - 180 (if bearing
     # is more than 180)
@@ -108,8 +106,8 @@ lakeFetch <- function(inLakeMorpho, bearing, addLine = T) {
         xlines <- slot(lakeLinesSL_proj[i], "lines")
         xLines <- slot(xlines[[1]], "Lines")
         for (j in 1:length(xLines)) {
-            lakeLinesList_proj[length(lakeLinesList_proj) + 1] <- Lines(xLines[j], as.character(length(lakeLinesList_proj) + 
-                1))
+            lakeLinesList_proj[[length(lakeLinesList_proj) + 1]] <- 
+              Lines(xLines[j], as.character(length(lakeLinesList_proj) + 1))
         }
     }
     
