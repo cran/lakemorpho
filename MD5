@@ -1,4 +1,4 @@
-15f07ca0c223abfd76d6464bf618c7cf *DESCRIPTION
+360f17b12bd8d9870e4eb17e2835713b *DESCRIPTION
 60bb7e0938b5cd640059dbc6e49315b5 *NAMESPACE
 a051ddbdcccdb1520fb189d8a121f691 *R/calcLakeMetrics.R
 b2d3dfa3648367e94ff8cd1a2ddd6b54 *R/lakeFetch.R
@@ -16,7 +16,7 @@ c1abd357091bbce08b16a47e3b06276a *R/lakeVolume.R
 0b4f974ff1d4b0622f1b2b75c48907ba *R/lakemorpho.R
 87625a62aedf3c5c3c105f26dd8c3580 *R/lakes.R
 f7c63b0ac81b746aacbe4f251ef8b710 *R/plot.lakemorpho.R
-e9c8b956e9ffeccf954a4286bd3a347b *README.md
+b5b8cda00f71f6f1384c9a7ef47149a8 *README.md
 01d9a1435411e7d6d702686e87c6c30f *data/lakes.RData
 ddabf0fbead205f8378350c1b60c1790 *man/calcLakeMetrics.Rd
 6d3729cd96ec2b1060796dd80bca7656 *man/exampleElev.Rd
@@ -36,16 +36,3 @@ ca25e9ba601e301ed247823f503f69d6 *man/lakeSurfaceArea.Rd
 4c609dc4c636dada23aceca3fc7af36e *man/lakeVolume.Rd
 9e992a12687faca1b303577060b9fb58 *man/lakemorpho.Rd
 8a8548db724fea2fb174fd25987e3e4b *man/plot.lakeMorpho.Rd
-79fc897b3bf4926c2a52fca24f437af7 *vignettes/components/F1000Research.Rmd
-90c38dfa6cc6af2e92b2b8dffc292bb0 *vignettes/components/F1000Research.tex
-bdfe542960606f238d4fa211380ef87c *vignettes/components/F1000Research_files/figure-latex/Fig1.pdf
-bbe5c0da8053bd8af9c261ca5eb5efb9 *vignettes/components/F1000Research_files/figure-latex/Fig2.pdf
-04037a4ac5ec411a0c41c572257db36f *vignettes/components/F1000header.png
-a7306e65c0ff3fa060a8bbd5aebad150 *vignettes/components/F1000research.latex
-91539aeba57721825850508b3373bf8e *vignettes/components/ecology.csl
-8b364e629a7cc0e341f32a8c81d32462 *vignettes/components/f1000_styles.sty
-29d6ac15d7167fe2ba339b9e0592b35e *vignettes/components/manuscript.bib
-bd083e060e0108b7a487e5e3c488ab63 *vignettes/components/manuscript.latex
-ab8166e950f58c91d4f42068d1ff3ecd *vignettes/components/plos.csl
-6c5af74d90a5b718819fd8fbf927236c *vignettes/lakemorpho_manuscript.R
-e177dbef92e728179c08eda08b3a7d4b *vignettes/lakemorpho_manuscript.Rmd
