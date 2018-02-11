@@ -18,9 +18,7 @@
 #' @examples
 #' data(lakes)
 #' lakeMinorMajorRatio(inputLM)
-#' plot(inputLM$lake)
-#' lines(inputLM$majoraxisLengthLine)
-#' lines(inputLM$minoraxisLengthLine)
+
 
 lakeMinorMajorRatio <- function(inLakeMorpho, addLine = TRUE) {
   myName <- deparse(substitute(inLakeMorpho))

@@ -25,11 +25,7 @@ convex hull of a lake.
 \examples{
 data(lakes)
 lakeMinorMajorRatio(inputLM)
-plot(inputLM$lake)
-lines(inputLM$majoraxisLengthLine)
-lines(inputLM$minoraxisLengthLine)
 }
 \references{
 \href{https://en.wikipedia.org/wiki/Semi-major_and_semi-minor_axes}{Link}
 }
-

@@ -18,10 +18,10 @@ Mean lake width is the result of lake surface area divded by the maximum
 length.
 }
 \examples{
-\dontrun{
 data(lakes)
+lakeMaxLength(inputLM, 50)
 lakeMeanWidth(inputLM)
-}
+
 }
 \references{
 Florida LAKEWATCH (2001). A Beginner's guide to water management
@@ -30,4 +30,3 @@ Florida LAKEWATCH (2001). A Beginner's guide to water management
             \href{http://edis.ifas.ufl.edu/pdffiles/FA/FA08100.pdf}{Link}
 #' @import rgeos
 }
-

@@ -35,6 +35,7 @@
 #' data(lakes)
 #' lakeMaxLength(inputLM,50)
 
+
 lakeMaxLength <- function(inLakeMorpho, pointDens, addLine = T) {
     if (class(inLakeMorpho) != "lakeMorpho") {
         stop("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo or lakeMorphoClass first.")
@@ -55,7 +56,12 @@ lakeMaxLength <- function(inLakeMorpho, pointDens, addLine = T) {
     if (sum(myInd) == 0) {
         return(NA)
     }
-    myLine <- myLines[myInd][gLength(myLines[myInd], byid = T) == max(gLength(myLines[myInd], byid = T))]
+    if(capabilities("long.double")){
+      myLine <- myLines[myInd][gLength(myLines[myInd], byid = T) == max(gLength(myLines[myInd], byid = T))]
+    } else {
+      myLine <- myLines[myInd][round(gLength(myLines[myInd], byid = T),8) == round(max(gLength(myLines[myInd], byid = T)),8)]
+    }
+    
     result <- gLength(myLine)
     
     if (addLine) {

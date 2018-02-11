@@ -11,17 +11,19 @@
 #' @export
 #' @return This returns a numeric value indicating the length of the major axis
 #'  in the lake. Units are the same as the input data.
-#' @encoding UTF-8
+#'  
 #' @references \href{https://en.wikipedia.org/wiki/Semi-major_and_semi-minor_axes}{Wikipedia}
 #' 
+#' Kirillin, G., Engelhardt, C., Golosov, S. and Hintze, T., 2009. Basin-scale
+#' internal waves in the bottom boundary layer of ice-covered Lake Mueggelsee,
+#' Germany. Aquatic ecology, 43(3), pp.641-651.
 #' 
 #' @importFrom rgeos gLength
 #' @importFrom cluster ellipsoidhull
 #' @examples
 #' data(lakes)
 #' lakeMajorAxisLength(inputLM)
-#' plot(inputLM$lake)
-#' lines(inputLM$majoraxisLengthLine)
+
 
 lakeMajorAxisLength <- function(inLakeMorpho, addLine = TRUE) {
 
@@ -30,16 +32,23 @@ lakeMajorAxisLength <- function(inLakeMorpho, addLine = TRUE) {
   }
   
   result <- NA
-  lakeShorePoints <- as(as(inLakeMorpho$lake, "SpatialLines"),
-                        "SpatialPoints")@coords
+  #Change to perhaps deal with noLD
+  lakeShoreLine <- as(inLakeMorpho$lake, "SpatialLines")
+  lakeShorePoints <- as(lakeShoreLine, "SpatialPoints")
+  lakeShoreCoords <- coordinates(lakeShorePoints)
   
   # https://stackoverflow.com/questions/18278382/how-to-obtain-the-lengths-of-semi-axes-of-an-ellipse-in-r
-  elpshull <- predict(cluster::ellipsoidhull(lakeShorePoints))
+  elpshull <- predict(cluster::ellipsoidhull(lakeShoreCoords))
   elpshull.center <- matrix(colMeans((elpshull)), ncol = 2, nrow = 1)
   
   dist2center <- sqrt(rowSums((t(t(elpshull) - colMeans((elpshull))))^2))
 
-  myLine.max <- elpshull[dist2center == max(dist2center),]
+  if(capabilities("long.double")){
+    myLine.max <- elpshull[dist2center == max(dist2center),]
+  } else {
+    myLine.max <- elpshull[round(dist2center,8) == round(max(dist2center),8),]
+  }
+
   myLine <- sp::SpatialLines(list(Lines(list(Line(myLine.max)), "1")),
               proj4string = sp::CRS(sp::proj4string(inLakeMorpho$lake)))
 

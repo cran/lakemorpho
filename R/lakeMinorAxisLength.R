@@ -16,10 +16,10 @@
 #' @importFrom sp proj4string CRS SpatialLines
 #' @importFrom cluster ellipsoidhull
 #' @examples
+#' 
 #' data(lakes)
 #' lakeMinorAxisLength(inputLM)
-#' plot(inputLM$lake)
-#' lines(inputLM$minoraxisLengthLine)
+#' 
 
 lakeMinorAxisLength <- function(inLakeMorpho, addLine = TRUE) {
 
@@ -28,16 +28,22 @@ lakeMinorAxisLength <- function(inLakeMorpho, addLine = TRUE) {
   }
   
   result <- NA
-  lakeShorePoints <- as(as(inLakeMorpho$lake, "SpatialLines"),
-                        "SpatialPoints")@coords
+  lakeShoreLine <- as(inLakeMorpho$lake, "SpatialLines")
+  lakeShorePoints <- as(lakeShoreLine, "SpatialPoints")
+  lakeShoreCoords <- coordinates(lakeShorePoints)
   
   # https://stackoverflow.com/questions/18278382/how-to-obtain-the-lengths-of-semi-axes-of-an-ellipse-in-r
-  elpshull <- predict(cluster::ellipsoidhull(lakeShorePoints))
+  elpshull <- predict(cluster::ellipsoidhull(lakeShoreCoords))
   elpshull.center <- matrix(colMeans((elpshull)), ncol = 2, nrow = 1)
   
   dist2center <- sqrt(rowSums((t(t(elpshull) - colMeans((elpshull))))^2))
   
-  myLine.min <- rbind(elpshull.center, elpshull[dist2center == min(dist2center),])
+  if(capabilities("long.double")){
+    myLine.min <- rbind(elpshull.center, elpshull[dist2center == min(dist2center),])
+  } else {
+    myLine.min <- rbind(elpshull.center, elpshull[round(dist2center,8) == round(min(dist2center),8),])
+  }
+  
   
   myLine <- sp::SpatialLines(list(Lines(list(Line(myLine.min)), "1")),
               proj4string = sp::CRS(sp::proj4string(inLakeMorpho$lake)))

@@ -5,7 +5,9 @@
 #' If no input catchements are used, it is assumed that a buffer equal to the
 #' maximum in lake distance is used. If an input catchement is used, then the 
 #' surrounding topography is the land area represented by the  catchements that 
-#' intersect the lake. 
+#' intersect the lake. This function (and all of \code{lakemorpho}) expect clean
+#' polygons.  No internal checking (e.g. for proper encoding of holes, etc.) is
+#' done.
 #' 
 #' 
 #' @param inLake a SpatialPolygons or SpatialPolygonsDataFrame representing the input lake. Required.
@@ -16,15 +18,22 @@
 #' @param reso Optional resolution for raster output (e.g. lake distance).  
 #'        Defaults to the resolution of inElev
 #'
-#' @import sp rgeos raster rgdal methods maptools                 
+#' @import sp rgeos raster rgdal methods                 
 #' @export
 #' @return Returns an object of class 'lakemorpho' that includes the surrounding
 #'         topography of the lake.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(lakes)
 #' inputLM<-lakeSurroundTopo(exampleLake,exampleElev)
-#' inputLM}
+#' inputLM
+#' }
+#' \dontshow{
+#' data(lakes)
+#' x<-as(rgeos::gBuffer(rgeos::gCentroid(exampleLake),width = 100), "SpatialPolygonsDataFrame")
+#' y<-raster::crop(exampleElev,x)
+#' lakeSurroundTopo(x,y)
+#' }
 
 lakeSurroundTopo <- function(inLake, inElev, inCatch = NULL, reso = res(inElev)[1]) {
   
@@ -32,7 +41,7 @@ lakeSurroundTopo <- function(inLake, inElev, inCatch = NULL, reso = res(inElev)[
         stop(paste(dim(inLake)[1], "polygons input. Select a single lake as input."))
     }
     
-    slot(inLake, "polygons") <- lapply(slot(inLake, "polygons"), checkPolygonsHoles)
+    #slot(inLake, "polygons") <- lapply(slot(inLake, "polygons"), checkPolygonsHoles)
     # Ignores lakes smaller that 3X3 30 m pixels
     if (gArea(inLake) <= 8100) {
         return(NULL)

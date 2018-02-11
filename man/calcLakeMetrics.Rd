@@ -34,9 +34,13 @@ each metric for an input lakeMorphoClass.  This returns a list of all
 metrics
 }
 \examples{
-\dontrun{
+\donttest{
 data(lakes)
 calcLakeMetrics(inputLM,45,250)
+}
+\dontshow{
+data(lakes)
+calcLakeMetrics(inputLM,45,10)
 }
 }
 \references{
@@ -54,4 +58,3 @@ Hollister, J. W., W.B. Milstead, M.A. Urrutia (2011). Predicting
             Maximum Lake Depth from Surrounding Topography. PLoS ONE 6(9).
             \href{http://dx.doi.org/10.1371/journal.pone.0025764}{link}
 }
-
