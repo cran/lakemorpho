@@ -10,6 +10,9 @@
 #' @param pointDens Number of points to place equidistant along shoreline for 
 #'        \code{\link{lakeMaxLength}} or density of lines to test for 
 #'        \code{\link{lakeMaxWidth}} and \code{\link{lakeFetch}}.
+#' @param slope_quant The slope quantile to use to estimate maximum depth.  
+#'                    Defaults to the median as described in (Hollister et. al, 
+#'                    2011).
 #' @param correctFactor Value used to correct the predicted maximum lake depth.  
 #'        Defaults to 1. Corrections are simply accomplished by multiplying 
 #'        estimated max depth by correction factor. Correction factors can be 
@@ -17,6 +20,9 @@
 #'        known maximum depth while forcing the intercept through zero.  The 
 #'        slope of the line would then be used as the correction 
 #'        factor(Hollister et. al, 2011). 
+#' @param zmax Maximum depth of the lake.  If none entered and elevation dataset
+#'             is inlcuded in inLakeMorpho, \code{\link{lakeMaxDepth}} is used 
+#'             to estimate a maximum depth.
 #'        
 #'         
 #' @references Florida LAKEWATCH (2001). A Beginner's guide to water management
@@ -26,10 +32,10 @@
 #' @references Hollister, J. W., W.B. Milstead (2010). Using GIS to Estimate 
 #'             Lake Volume from Limited Data. Lake and Reservoir Management. 
 #'             26(3)194-199.
-#'             \href{http://dx.doi.org/10.1080/07438141.2010.504321}{Link}
+#'             \doi{10.1080/07438141.2010.504321}
 #' @references Hollister, J. W., W.B. Milstead, M.A. Urrutia (2011). Predicting 
 #'             Maximum Lake Depth from Surrounding Topography. PLoS ONE 6(9).
-#'             \href{http://dx.doi.org/10.1371/journal.pone.0025764}{link} 
+#'             \doi{10.1371/journal.pone.0025764} 
 #' @export
 #' @return Returns a list with all lake metrics calculated for a given input
 #'         lakemorpho object
@@ -37,21 +43,34 @@
 #' @examples
 #' \donttest{
 #' data(lakes)
-#' calcLakeMetrics(inputLM,45,250)
-#' }
-#' \dontshow{
-#' data(lakes)
-#' calcLakeMetrics(inputLM,45,10)
+#' calcLakeMetrics(inputLM, bearing = 45, pointDens = 250)
 #' }
 
-calcLakeMetrics <- function(inLakeMorpho, bearing, pointDens, correctFactor = 1) {
+calcLakeMetrics <- function(inLakeMorpho, bearing, pointDens, slope_quant=0.5, 
+                            correctFactor = 1, zmax = NULL) {
     if (class(inLakeMorpho) != "lakeMorpho") {
         return(warning("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo first."))
     }
-    allMet <- list(surfaceArea = lakeSurfaceArea(inLakeMorpho), shorelineLength = lakeShorelineLength(inLakeMorpho), 
-        shorelineDevelopment = lakeShorelineDevelopment(inLakeMorpho), maxDepth = lakeMaxDepth(inLakeMorpho, 
-            correctFactor), volume = lakeVolume(inLakeMorpho, correctFactor), meanDepth = lakeMeanDepth(inLakeMorpho), 
-        maxLength = lakeMaxLength(inLakeMorpho, pointDens), maxWidth = lakeMaxWidth(inLakeMorpho, pointDens), 
-        meanWidth = lakeMeanWidth(inLakeMorpho), fetch = lakeFetch(inLakeMorpho, bearing))
+    allMet <- list(surfaceArea = lakeSurfaceArea(inLakeMorpho), 
+                   shorelineLength = lakeShorelineLength(inLakeMorpho), 
+                   shorelineDevelopment = lakeShorelineDevelopment(inLakeMorpho), 
+                   maxDepth = ifelse(is.null(zmax), 
+                                     lakeMaxDepth(inLakeMorpho, slope_quant, 
+                                           correctFactor),
+                                     zmax), 
+                   volume = lakeVolume(inLakeMorpho, slope_quant = slope_quant, 
+                                       correctFactor = correctFactor, 
+                                       zmax = zmax), 
+                   meanDepth = lakeMeanDepth(inLakeMorpho, 
+                                             slope_quant = slope_quant, 
+                                             correctFactor = correctFactor, 
+                                             zmax = zmax), 
+                   maxLength = lakeMaxLength(inLakeMorpho, pointDens), 
+                   maxWidth = lakeMaxWidth(inLakeMorpho, pointDens), 
+                   meanWidth = lakeMeanWidth(inLakeMorpho),
+                   majorAxis = lakeMajorAxisLength(inLakeMorpho),
+                   minorAxis = lakeMinorAxisLength(inLakeMorpho),
+                   axisRatio = lakeMinorMajorRatio(inLakeMorpho),
+                   fetch = lakeFetch(inLakeMorpho, bearing))
     return(allMet)
 } 

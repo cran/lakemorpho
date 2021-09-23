@@ -4,7 +4,7 @@
 \alias{lakeMeanDepth}
 \title{Function to return lake Mean Depth}
 \usage{
-lakeMeanDepth(inLakeMorpho, zmax = NULL)
+lakeMeanDepth(inLakeMorpho, zmax = NULL, slope_quant = 0.5, correctFactor = 1)
 }
 \arguments{
 \item{inLakeMorpho}{An object of \code{\link{lakeMorphoClass}}.  Output of the 
@@ -13,6 +13,13 @@ lakeMeanDepth(inLakeMorpho, zmax = NULL)
 \item{zmax}{Maximum depth of the lake.  If none entered and elevation dataset
 is inlcuded in inLakeMorpho, \code{\link{lakeMaxDepth}} is used 
 to estimate a maximum depth.}
+
+\item{slope_quant}{The slope quantile to use to estimate maximum depth.
+Defaults to the median as described in (Hollister et. al, 
+2011).}
+
+\item{correctFactor}{This a factor used by \code{\link{lakeMaxDepth}} to
+correct the predicted maximum lake depth.  Defaults to 1.}
 }
 \value{
 Returns a numerica value for the mean depth of the lake

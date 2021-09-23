@@ -4,7 +4,14 @@
 \alias{calcLakeMetrics}
 \title{Calculate all Lake Morphometry Metrics}
 \usage{
-calcLakeMetrics(inLakeMorpho, bearing, pointDens, correctFactor = 1)
+calcLakeMetrics(
+  inLakeMorpho,
+  bearing,
+  pointDens,
+  slope_quant = 0.5,
+  correctFactor = 1,
+  zmax = NULL
+)
 }
 \arguments{
 \item{inLakeMorpho}{an object of \code{\link{lakeMorphoClass}}.  Output of the 
@@ -16,6 +23,10 @@ calcLakeMetrics(inLakeMorpho, bearing, pointDens, correctFactor = 1)
 \code{\link{lakeMaxLength}} or density of lines to test for 
 \code{\link{lakeMaxWidth}} and \code{\link{lakeFetch}}.}
 
+\item{slope_quant}{The slope quantile to use to estimate maximum depth.
+Defaults to the median as described in (Hollister et. al, 
+2011).}
+
 \item{correctFactor}{Value used to correct the predicted maximum lake depth.
 Defaults to 1. Corrections are simply accomplished by multiplying 
 estimated max depth by correction factor. Correction factors can be 
@@ -23,6 +34,10 @@ determined empirically by regressing the predicted depth against a
 known maximum depth while forcing the intercept through zero.  The 
 slope of the line would then be used as the correction 
 factor(Hollister et. al, 2011).}
+
+\item{zmax}{Maximum depth of the lake.  If none entered and elevation dataset
+is inlcuded in inLakeMorpho, \code{\link{lakeMaxDepth}} is used 
+to estimate a maximum depth.}
 }
 \value{
 Returns a list with all lake metrics calculated for a given input
@@ -36,11 +51,7 @@ metrics
 \examples{
 \donttest{
 data(lakes)
-calcLakeMetrics(inputLM,45,250)
-}
-\dontshow{
-data(lakes)
-calcLakeMetrics(inputLM,45,10)
+calcLakeMetrics(inputLM, bearing = 45, pointDens = 250)
 }
 }
 \references{
@@ -52,9 +63,9 @@ Florida LAKEWATCH (2001). A Beginner's guide to water management
 Hollister, J. W., W.B. Milstead (2010). Using GIS to Estimate 
             Lake Volume from Limited Data. Lake and Reservoir Management. 
             26(3)194-199.
-            \href{http://dx.doi.org/10.1080/07438141.2010.504321}{Link}
+            \doi{10.1080/07438141.2010.504321}
 
 Hollister, J. W., W.B. Milstead, M.A. Urrutia (2011). Predicting 
             Maximum Lake Depth from Surrounding Topography. PLoS ONE 6(9).
-            \href{http://dx.doi.org/10.1371/journal.pone.0025764}{link}
+            \doi{10.1371/journal.pone.0025764}
 }

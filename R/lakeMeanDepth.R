@@ -5,6 +5,11 @@
 #' 
 #' @param inLakeMorpho An object of \code{\link{lakeMorphoClass}}.  Output of the 
 #'        \code{\link{lakeSurroundTopo}} function would be appropriate as input
+#' @param slope_quant The slope quantile to use to estimate maximum depth.  
+#'                    Defaults to the median as described in (Hollister et. al, 
+#'                    2011).
+#' @param correctFactor This a factor used by \code{\link{lakeMaxDepth}} to
+#'        correct the predicted maximum lake depth.  Defaults to 1.
 #' @param zmax Maximum depth of the lake.  If none entered and elevation dataset
 #'             is inlcuded in inLakeMorpho, \code{\link{lakeMaxDepth}} is used 
 #'             to estimate a maximum depth.
@@ -20,14 +25,18 @@
 #' lakeMeanDepth(inputLM)
 
 
-lakeMeanDepth <- function(inLakeMorpho, zmax = NULL) {
+lakeMeanDepth <- function(inLakeMorpho,  zmax = NULL, 
+                          slope_quant = 0.5, correctFactor = 1) {
     if (class(inLakeMorpho) != "lakeMorpho") {
       stop("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo or lakeMorphoClass first.")
     }
     if(is.null(inLakeMorpho$elev) & is.null(zmax)){
-      stop("No maximum depth provided and no elevation data included to estimate 
-              maximum depth.  Provide a maximum depth or run lakeSurroundTopo 
-              first with elevation included")
+      warning("No maximum depth provided and no elevation data included to estimate 
+            maximum depth.  Provide a maximum depth or run lakeSurroundTopo 
+            first with elevation included.  Without these, returns NA.")
+      return(NA)
     }
-    return(lakeVolume(inLakeMorpho, zmax)/lakeSurfaceArea(inLakeMorpho))
+    return(round(lakeVolume(inLakeMorpho, slope_quant = slope_quant, 
+                            zmax = zmax, correctFactor = correctFactor)/
+                   lakeSurfaceArea(inLakeMorpho), 4))
 } 

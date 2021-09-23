@@ -8,7 +8,7 @@
 #' uses this approach to also estimate maximum depth, mean depth, and volume.
 #' 
 #' This development version of this package is available at 
-#' https://github.com/USEPA/lakemorpho 
+#' https://github.com/USEPA/lakemorpho/ 
 #' 
 #' @references Florida LAKEWATCH (2001). A Beginner's guide to water management
 #'             - Lake Morphometry (2nd ed.). Gainesville: Florida LAKEWATCH, 
@@ -17,10 +17,10 @@
 #' @references Hollister, J. W., W.B. Milstead (2010). Using GIS to Estimate 
 #'             Lake Volume from Limited Data. Lake and Reservoir Management. 
 #'             26(3)194-199.
-#'             \href{https://dx.doi.org/10.1080/07438141.2010.504321}{Link}
+#'             \doi{10.1080/07438141.2010.504321}
 #' @references Hollister, J. W., W.B. Milstead, M.A. Urrutia (2011). Predicting 
 #'             Maximum Lake Depth from Surrounding Topography. PLoS ONE 6(9).
-#'             \href{https://dx.doi.org/10.1371/journal.pone.0025764}{link}           
+#'             \doi{10.1371/journal.pone.0025764}           
 #'             
 #' @name lakemorpho
 NULL 

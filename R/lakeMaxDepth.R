@@ -6,6 +6,9 @@
 #' 
 #' @param inLakeMorpho An object of \code{\link{lakeMorphoClass}}.  Output of the 
 #'        \code{\link{lakeSurroundTopo}} function would be appropriate as input
+#' @param slope_quant The slope quantile to use to estimate maximum depth.  
+#'                    Defaults to the median as described in (Hollister et. al, 
+#'                    2011).     
 #' @param correctFactor Value used to correct the predicted maximum lake depth.  
 #'        Defaults to 1. Corrections are simply accomplished by multiplying 
 #'        estimated max depth by correction factor. Correction factors can be 
@@ -17,7 +20,7 @@
 #' @return Returns a numeric value of the predicted maximum depth
 #' @references Hollister, J. W., W.B. Milstead, M.A. Urrutia (2011). Predicting 
 #'             Maximum Lake Depth from Surrounding Topography. PLoS ONE 6(9).
-#'             \href{https://dx.doi.org/10.1371/journal.pone.0025764}{link}
+#'             \doi{10.1371/journal.pone.0025764}
 #' 
 #' @references Florida LAKEWATCH (2001). A Beginner's guide to water management
 #'             - Lake Morphometry (2nd ed.). Gainesville: Florida LAKEWATCH, 
@@ -31,22 +34,23 @@
 #' data(lakes)
 #' lakeMaxDepth(inputLM)             
 
-lakeMaxDepth <- function(inLakeMorpho, correctFactor = 1) {
+lakeMaxDepth <- function(inLakeMorpho, slope_quant = 0.5, correctFactor = 1) {
     if (class(inLakeMorpho) != "lakeMorpho") {
       stop("Input data is not of class 'lakeMorpho'.  Run lakeSurround Topo or lakeMorphoClass first.")
     }
     if(is.null(inLakeMorpho$elev)){
-      stop("Input elevation dataset required to estimate depth related metrics.  
-             Run lakeSurround Topo first with elevation included")
+      warning("Input elevation dataset required to estimate depth related metrics. Returning NA. 
+             Run lakeSurround Topo first with elevation included.")
+      return(NA)
     }
-    slope <- terrain(inLakeMorpho$elev, "slope")@data@values
-    slope_med <- median(slope, na.rm = T)
+    slope <- raster::getValues(terrain(inLakeMorpho$elev, "slope"))
+    slope_med <- as.numeric(quantile(slope, probs = slope_quant, na.rm = TRUE))
     if (is.na(slope_med)) {
         return(NA)
     }
     if (slope_med == 0) {
-        slope_med <- mean(slope, na.rm = T)
+        slope_med <- mean(slope, na.rm = TRUE)
     }
-    maxDist <- max(inLakeMorpho$lakeDistance@data@values, na.rm = T)
-    return(correctFactor * (slope_med * maxDist))
+    maxDist <- max(raster::getValues(inLakeMorpho$lakeDistance), na.rm = TRUE)
+    return(round(correctFactor * (slope_med * maxDist), 4))
 } 
