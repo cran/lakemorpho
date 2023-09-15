@@ -17,7 +17,7 @@ lakeSurroundTopo(
 \item{inElev}{a RasterLayer representing the elevation around the lake. Required.}
 
 \item{inCatch}{Optional SpatialPolygons or SpatialPolygonsDataFrame defining the
-Surrounding Topography.  Default is NULL wich uses a buffer equal to the
+Surrounding Topography.  Default is NULL which uses a buffer equal to the
 maximum in lake distance.}
 
 \item{reso}{Optional resolution for raster output (e.g. lake distance).
@@ -43,10 +43,5 @@ data(lakes)
 inputLM<-lakeSurroundTopo(exampleLake,exampleElev)
 inputLM
 }
-\dontshow{
-data(lakes)
-x<-as(rgeos::gBuffer(rgeos::gCentroid(exampleLake),width = 100), "SpatialPolygonsDataFrame")
-y<-raster::crop(exampleElev,x)
-lakeSurroundTopo(x,y)
-}
+
 }
