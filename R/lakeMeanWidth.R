@@ -14,7 +14,7 @@
 #' 
 #' @examples
 #' data(lakes)
-#' lakeMaxLength(inputLM, 50)
+#' lakeMaxLength(inputLM, 25)
 #' lakeMeanWidth(inputLM)
 #' 
 

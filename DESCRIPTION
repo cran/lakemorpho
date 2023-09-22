@@ -1,7 +1,7 @@
 Package: lakemorpho
 Type: Package
 Title: Lake Morphometry Metrics
-Version: 1.3.0
+Version: 1.3.2
 Authors@R: c(
     person(given = "Jeffrey W.", family = "Hollister",
     role = c("aut","cre"),
@@ -30,9 +30,9 @@ Depends: R (>= 3.5.0)
 Imports: methods, stats, grDevices, raster, sp, sf, geosphere, cluster
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-09-15 19:28:42 UTC; JHollist
+Packaged: 2023-09-21 21:18:59 UTC; JHollist
 Author: Jeffrey W. Hollister [aut, cre]
     (<https://orcid.org/0000-0002-9254-9740>),
   Jemma Stachelek [aut] (<https://orcid.org/0000-0002-5924-2464>)
 Repository: CRAN
-Date/Publication: 2023-09-15 22:12:09 UTC
+Date/Publication: 2023-09-22 09:30:02 UTC

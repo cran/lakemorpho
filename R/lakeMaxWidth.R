@@ -32,8 +32,7 @@
 #' @examples
 #' library(lakemorpho)
 #' data(lakes)
-#' inputLM <- lakeSurroundTopo(exampleLake, exampleElev)
-#' lakeMaxWidth(inputLM,50)
+#' lakeMaxWidth(inputLM,25)
 
 
 lakeMaxWidth <- function(inLakeMorpho, pointDens, intersect = FALSE, 
@@ -131,7 +130,7 @@ lakeMaxWidth <- function(inLakeMorpho, pointDens, intersect = FALSE,
                                       max(sf::st_length(myInter))]
     } else {
       maxWidthLine <- myInter[round(sf::st_length(myInter),8) == 
-                                      round(max(sf::st_length(myInter)),8),]
+                                      round(max(sf::st_length(myInter)),8)]
     }
     
     if (addLine) {
